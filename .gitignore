@@ -37,10 +37,8 @@ yarn-error.log
 testem.log
 /typings
 
-# Environment files (contienen credenciales pero se	suben con placeholders)
-src/environments/environment.ts
-src/environments/environment.prod.ts
-# Los valores reales se injectan desde variables de entorno
+# Environment files (contienen credenciales)
+src/environments/
 
 # Variables de entorno locales
 .env
