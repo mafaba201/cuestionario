@@ -44,6 +44,8 @@ src/environments/environment.prod.ts
 
 # Variables de entorno locales
 .env
+.env.*
+!.env.example
 
 # System files
 .DS_Store
