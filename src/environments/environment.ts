@@ -1,11 +1,7 @@
 /**
  * Archivo de entorno para desarrollo.
  *
- * IMPORTANTE: Este archivo contiene credenciales sensibles y NO debe subirse
- * al repositorio. Está incluido en .gitignore.
- *
- * Para configurar un nuevo entorno, copia environment.example.ts
- * y renómbralo a environment.ts, luego completa los valores.
+ * Las variables SUPABASE_URL y SUPABASE_ANON_KEY se injectan durante el build.
  */
 export const environment = {
   production: false,

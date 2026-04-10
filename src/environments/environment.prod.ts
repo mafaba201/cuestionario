@@ -1,10 +1,8 @@
 /**
  * Archivo de entorno para producción.
  *
- * Este archivo se sustituye automáticamente durante el build de producción
- * mediante la configuración de fileReplacements en angular.json.
- *
- * IMPORTANTE: No subir credenciales reales al repositorio.
+ * Las variables SUPABASE_URL y SUPABASE_ANON_KEY se injectan desde
+ * las variables de entorno de Netlify durante el build.
  */
 export const environment = {
   production: true,
