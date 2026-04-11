@@ -1,36 +1,37 @@
 const fs = require('fs');
 const path = require('path');
 
-const defaultUrl = '';
-const defaultKey = '';
+const mode = process.argv[2] || 'development';
 
 function updateEnvFile(fileName) {
   const envFile = path.join(__dirname, '..', 'src', 'environments', fileName);
 
   if (!fs.existsSync(envFile)) {
-    console.log(`Archivo ${fileName} no encontrado, omitiendo`);
-    return;
+    console.error(`ERROR: Archivo ${fileName} no encontrado`);
+    process.exit(1);
   }
 
   let content = fs.readFileSync(envFile, 'utf8');
 
-  const supabaseUrl = process.env.SUPABASE_URL || process.env['SUPABASE_URL'];
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env['SUPABASE_ANON_KEY'];
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.log(`AVISO: Variables de entorno no encontradas. Usando valores por defecto para ${fileName}`);
-    content = content.replace(/__SUPABASE_URL__/g, defaultUrl);
-    content = content.replace(/__SUPABASE_ANON_KEY__/g, defaultKey);
-  } else {
-    content = content.replace(/__SUPABASE_URL__/g, supabaseUrl);
-    content = content.replace(/__SUPABASE_ANON_KEY__/g, supabaseAnonKey);
+    console.error(`ERROR: Variables de entorno SUPABASE_URL y SUPABASE_ANON_KEY no definidas`);
+    console.error(`Ejemplo:`);
+    console.error(`  $env:SUPABASE_URL="https://tu-proyecto.supabase.co"`);
+    console.error(`  $env:SUPABASE_ANON_KEY="tu-key"`);
+    console.error(`  npm start`);
+    process.exit(1);
   }
 
+  content = content.replace(/supabaseUrl:\s*'[^']*'/, `supabaseUrl: '${supabaseUrl}'`);
+  content = content.replace(/supabaseAnonKey:\s*'[^']*'/, `supabaseAnonKey: '${supabaseAnonKey}'`);
+
   fs.writeFileSync(envFile, content);
-  console.log(`Variables aplicadas en ${fileName}`);
+  console.log(`Actualizado ${fileName} - Modo: ${mode}`);
 }
 
 updateEnvFile('environment.ts');
-updateEnvFile('environment.prod.ts');
 
-console.log('Build environment listo');
+console.log(`set-env.js completado`);
