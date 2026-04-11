@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const mode = process.argv[2] || 'development';
+const isProduction = mode === 'production';
+
+const envFileName = isProduction ? 'environment.prod.ts' : 'environment.ts';
 
 function updateEnvFile(fileName) {
   const envFile = path.join(__dirname, '..', 'src', 'environments', fileName);
@@ -17,11 +20,8 @@ function updateEnvFile(fileName) {
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error(`ERROR: Variables de entorno SUPABASE_URL y SUPABASE_ANON_KEY no definidas`);
-    console.error(`Ejemplo:`);
-    console.error(`  $env:SUPABASE_URL="https://tu-proyecto.supabase.co"`);
-    console.error(`  $env:SUPABASE_ANON_KEY="tu-key"`);
-    console.error(`  npm start`);
+    console.error(`ERROR: Variables de entorno SUPABASE_URL y SUPABASE_ANON_KEY no definidas para ${mode}`);
+    console.error(`En Netlify: Site settings > Environment variables`);
     process.exit(1);
   }
 
@@ -32,6 +32,6 @@ function updateEnvFile(fileName) {
   console.log(`Actualizado ${fileName} - Modo: ${mode}`);
 }
 
-updateEnvFile('environment.ts');
+updateEnvFile(envFileName);
 
-console.log(`set-env.js completado`);
+console.log(`set-env.js completado (${mode})`);
